@@ -1,4 +1,3 @@
-
 firehouse:
   build: ./firehouse
   privileged: true
@@ -9,6 +8,7 @@ firehouse:
     - /tmp/:/tmp:rw
     - firehouse/:/firehouse:rw
   links:
+    - nginx
     - postgres
     - redis
     - socketio
@@ -29,7 +29,7 @@ postgres:
 redis:
   build: ./redis
   ports:
-    - 6379
+    - 6379:6379
   volumes:
     - shared/:/shared:rw
     - volumes/logs/:/logs:rw
@@ -60,21 +60,15 @@ firealerter:
     SERVER_HOST: 192.168.1.200
 
 broadcast:
+  build: ./broadcast
   environment:
     firehouse_path: /firehouse
     logs_path: /logs
     SERVER_HOST: 192.168.1.200
-  build: ./broadcast
   privileged: true
-  volumes:
-    - shared/:/shared:rw
-    - volumes/logs:/logs:rw
-    - firehouse/:/firehouse:ro
-    - shared/:/shared:rw
-  ports:
-    - 8000:8000
-  links:
-    - redis
+  net: host
+  volumes_from:
+    - firehouse
 
 socketio:
   build: ./socketio

@@ -40,10 +40,10 @@ ENV BUNDLE_APP_CONFIG $GEM_HOME
 
 RUN apt-get clean
 
-RUN git clone https://github.com/FRM-UTN/firehouse_audio
+RUN git clone -v https://github.com/FRM-UTN/firehouse_audio
 RUN cd firehouse_audio && bundle install
 
-RUN useradd vlc
+RUN useradd -m vlc
 RUN usermod -aG pulse,pulse-access root
 RUN usermod -aG pulse,pulse-access vlc
 RUN pulseaudio --system -D
