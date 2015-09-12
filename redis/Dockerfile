@@ -35,5 +35,7 @@ RUN mkdir -p /data
 VOLUME /data
 WORKDIR /data
 
+ADD redis.conf /etc/redis.conf
+
 EXPOSE 6379
 CMD redis-server
