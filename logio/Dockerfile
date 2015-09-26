@@ -5,7 +5,6 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-
 RUN apt-get -y install curl python python-pip python-dev
 RUN curl -sL https://deb.nodesource.com/setup | bash -
 
@@ -19,7 +18,7 @@ ENV USER logio
 WORKDIR /home/logio
 EXPOSE 28778 28778
 
-RUN mkdir -i /home/logio/.log.io/
+RUN mkdir -p /home/logio/.log.io/
 ADD harvester.conf /home/logio/.log.io/harvester.conf
 
 CMD log.io-harvester
