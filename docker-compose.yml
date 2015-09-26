@@ -14,7 +14,6 @@ firehouse:
     - socketio
   environment:
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
 
 postgres:
   build: ./postgres
@@ -26,7 +25,6 @@ postgres:
     - volumes/postgres-data/:/var/lib/postgresql:rw
   environment:
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
 
 redis:
   build: ./redis
@@ -38,7 +36,6 @@ redis:
     - volumes/redis-data/:/data:rw
   environment:
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
 
 nginx:
   build: ./nginx
@@ -49,8 +46,6 @@ nginx:
     - /tmp/:/tmp:rw
   ports:
     - 80:80
-  environment:
-    http_proxy: http://dockerhost:3142/
 
 firealerter:
   build: ./firealerter
@@ -63,7 +58,6 @@ firealerter:
     - 9800:9800
   environment:
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
 
 broadcast:
   build: ./broadcast
@@ -71,7 +65,6 @@ broadcast:
     firehouse_path: /firehouse
     logs_path: /logs
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
   privileged: true
   net: host
   volumes_from:
@@ -88,7 +81,6 @@ socketio:
     - 8085:8085
   environment:
     SERVER_HOST: 192.168.1.200
-    http_proxy: http://dockerhost:3142/
 
 logio:
   build: ./logio
@@ -97,10 +89,8 @@ logio:
     - volumes/logs:/logs:rw
   ports:
     - 8086:28778
-  environment:
-    http_proxy: http://dockerhost:3142/
 
-apt_cacher:
+cacher:
   build: ./apt_cacher
   volumes:
     - volumes/cache:/var/cache/apt-cacher-ng:rw

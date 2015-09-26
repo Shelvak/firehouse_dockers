@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM shelvak/baseimage
 
 MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
@@ -7,6 +7,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y apt-cacher-ng
 
 VOLUME ["/var/cache/apt-cacher-ng"]
-EXPOSE 3142
+EXPOSE 3142:3142
 
 CMD chmod 777 /var/cache/apt-cacher-ng && /etc/init.d/apt-cacher-ng start && tail -f /var/log/apt-cacher-ng/*

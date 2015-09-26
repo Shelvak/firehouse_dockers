@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM shelvak/baseimage
 
 MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
@@ -20,4 +20,4 @@ RUN mkdir -p /shared
 
 VOLUME ["/shared", "/tmp", "/logs"]
 
-CMD nginx 
+CMD nginx

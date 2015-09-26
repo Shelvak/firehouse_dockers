@@ -1,8 +1,4 @@
-FROM phusion/baseimage
-
-RUN apt-get update \
-  && apt-get install -y curl \
-  && rm -rf /var/lib/apt/lists/*
+FROM shelvak/baseimage
 
 # grab gosu for easy step-down from root
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
@@ -17,7 +13,7 @@ ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-3.0.0.tar.gz
 ENV REDIS_DOWNLOAD_SHA1 c75fd32900187a7c9f9d07c412ea3b3315691c65
 
 # for redis-sentinel see: http://redis.io/topics/sentinel
-RUN buildDeps='gcc libc6-dev make'; \
+RUN buildDeps='libc6-dev'; \
   set -x \
   && apt-get update && apt-get install -y $buildDeps --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* \
