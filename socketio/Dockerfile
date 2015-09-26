@@ -5,7 +5,8 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -qq -y npm nodejs-legacy
+RUN apt-get install -y npm nodejs-legacy
+RUN apt-get -y clean autoclean autoremove
 
 RUN git clone https://github.com/FRM-UTN/firehouse_socketio
 

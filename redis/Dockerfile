@@ -27,6 +27,8 @@ RUN buildDeps='libc6-dev'; \
   && rm -r /usr/src/redis \
   && apt-get purge -y --auto-remove $buildDeps
 
+RUN apt-get -y clean autoclean autoremove
+
 RUN mkdir -p /data
 VOLUME /data
 WORKDIR /data

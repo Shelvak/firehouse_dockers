@@ -11,6 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-get -y install nodejs
 RUN adduser --shell /bin/false --gecos "" --disabled-password logio
 RUN export USER=logio; export HOME=/home/logio; npm install -g log.io --user "logio"
+RUN apt-get -y clean autoclean autoremove
 
 USER logio
 ENV HOME /home/logio

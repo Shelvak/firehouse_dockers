@@ -6,9 +6,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
-RUN apt-get install -qq -y ruby2.1 ruby2.1-dev zlib1g-dev \
+RUN apt-get install -y ruby2.1 ruby2.1-dev zlib1g-dev \
   libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt1-dev \
   libcurl4-openssl-dev libffi-dev nodejs
+
+RUN apt-get -y clean autoclean autoremove
 
 # skip installing gem documentation
 RUN echo 'gem: --no-rdoc --no-ri' >> "$HOME/.gemrc"

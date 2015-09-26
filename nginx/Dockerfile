@@ -5,7 +5,8 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -qq -y nginx
+RUN apt-get install -y nginx
+RUN apt-get -y clean autoclean autoremove
 
 RUN rm /etc/nginx/sites-enabled/default
 

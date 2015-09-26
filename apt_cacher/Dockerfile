@@ -9,6 +9,8 @@ RUN rm /etc/apt/apt.conf.d/01proxy
 
 RUN apt-get update && apt-get install -y apt-cacher-ng
 
+RUN apt-get -y clean autoclean autoremove
+
 VOLUME ["/var/cache/apt-cacher-ng"]
 EXPOSE 3142:3142
 
