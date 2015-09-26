@@ -95,4 +95,4 @@ cacher:
   volumes:
     - volumes/cache:/var/cache/apt-cacher-ng:rw
   ports:
-    - 3142
+    - 3142:3142
