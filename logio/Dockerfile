@@ -21,4 +21,6 @@ EXPOSE 28778 28778
 RUN mkdir -p /home/logio/.log.io/
 ADD harvester.conf /home/logio/.log.io/harvester.conf
 
-CMD log.io-harvester
+ADD start.sh /start.sh
+
+CMD sh /start.sh
