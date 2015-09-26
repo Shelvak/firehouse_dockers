@@ -5,6 +5,7 @@ firehouse:
     - /dev/snd:/dev/snd:rw
     - shared/:/shared:rw
     - volumes/logs:/logs:rw
+    - volumes/logs:/firehouse/log:rw
     - /tmp/:/tmp:rw
     - firehouse/:/firehouse:rw
   links:
