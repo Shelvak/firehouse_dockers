@@ -82,3 +82,10 @@ socketio:
   environment:
     SERVER_HOST: 192.168.1.200
 
+logio:
+  build: ./logio
+  volumes:
+    - shared/:/shared:rw
+    - volumes/logs:/logs:rw
+  ports:
+    - 28778:28778
