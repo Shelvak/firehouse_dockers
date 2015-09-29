@@ -7,7 +7,7 @@ firehouse:
     - volumes/logs:/firehouse/log:rw
     - /tmp/:/tmp:rw
     - firehouse/:/firehouse:rw
-    - bundle/bundle:/logs:rw
+    - bundle/:/bundle:rw
   links:
     - nginx
     - postgres
