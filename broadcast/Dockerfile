@@ -5,8 +5,8 @@ ENV DEBIAN_FRONTEND noninteractive
 MAINTAINER Nestor Coppi
 
 RUN apt-get update
-RUN apt-get install -y -qq vlc
-RUN apt-get clean
+RUN apt-get install -y vlc
+RUN apt-get -y clean autoclean autoremove
 
 RUN useradd --create-home vlc
 

@@ -1,31 +1,22 @@
 
 list
 
-== Install
+== Install / Start
 - docker build -t shelvak/ruby:2.1 ruby/
+- docker build -t shelvak/baseimage baseimage/
 - apt-get install python-pip
 - pip install docker-compose
+- docker-compose build cacher
+- docker-compose up -d cacher
 - docker-compose build
 - docker-compose up -d
 
-== COMMANDS
-`global -v /shared:/shared -v /tmp:/tmp --rm -d` ## O configurar con fig
-- docker run -p 9800:9800 -d shelvak/firealerter:1.0
-- docker run -p 80:80 -d shelvak/nginx
-
-== Deploy
+== Rails Deploy
 ```bash
 cd firehouse
 git pull --rebase
 cd ..
-docker build -t shelvak/firehose firehouse/
-docker run -p 9000 --rm -d shelvak/firehouse
-
-NOTAS
+docker-compose restart firehouse
+docker-compose run --service-ports firehouse ./starting_the_milonga.sh
 
 
-
-
-USAR FIG
-
-agregar /shared/firehouse.app_config.yml

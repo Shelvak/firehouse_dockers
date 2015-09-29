@@ -2,12 +2,12 @@ firehouse:
   build: ./firehouse
   privileged: true
   volumes:
-    - /dev/snd:/dev/snd:rw
     - shared/:/shared:rw
     - volumes/logs:/logs:rw
     - volumes/logs:/firehouse/log:rw
     - /tmp/:/tmp:rw
     - firehouse/:/firehouse:rw
+    - bundle/bundle:/logs:rw
   links:
     - nginx
     - postgres
@@ -21,7 +21,6 @@ postgres:
   ports:
     - 5432:5432
   volumes:
-    - shared/:/shared:rw
     - volumes/logs:/logs:rw
     - volumes/postgres-data/:/var/lib/postgresql:rw
   environment:
@@ -32,7 +31,6 @@ redis:
   ports:
     - 6379:6379
   volumes:
-    - shared/:/shared:rw
     - volumes/logs/:/logs:rw
     - volumes/redis-data/:/data:rw
   environment:
@@ -51,8 +49,8 @@ nginx:
 firealerter:
   build: ./firealerter
   volumes:
-    - shared/:/shared:rw
     - volumes/logs:/logs:rw
+    - bundle/bundle:/logs:rw
   links:
     - redis
   ports:
@@ -74,7 +72,6 @@ broadcast:
 socketio:
   build: ./socketio
   volumes:
-    - shared/:/shared:rw
     - volumes/logs:/logs:rw
   links:
     - redis
@@ -86,7 +83,13 @@ socketio:
 logio:
   build: ./logio
   volumes:
-    - shared/:/shared:rw
     - volumes/logs:/logs:rw
   ports:
-    - 28778:8086
+    - 8086:28778
+
+cacher:
+  build: ./apt_cacher
+  volumes:
+    - volumes/cache:/var/cache/apt-cacher-ng:rw
+  ports:
+    - 3142:3142
