@@ -4,11 +4,11 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN add-apt-repository -y ppa:chris-lea/node.js
 RUN apt-get update
-RUN apt-get -y install python python-pip python-dev
-RUN curl -sL https://deb.nodesource.com/setup | bash -
 
 RUN apt-get -y install nodejs
+RUN apt-get -y install python python-pip python-dev
 RUN adduser --shell /bin/false --gecos "" --disabled-password logio
 RUN export USER=logio; export HOME=/home/logio; npm install -g log.io --user "logio"
 RUN apt-get -y clean autoclean autoremove

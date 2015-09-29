@@ -1,3 +1,3 @@
 [submodule "firehouse"]
 	path = firehouse
-	url = http://github.com/FRM-UTN/firehouse
+	url = git@github.com:FRM-UTN/firehouse.git
