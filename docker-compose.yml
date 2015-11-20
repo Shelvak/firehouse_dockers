@@ -2,39 +2,40 @@ firehouse:
   build: ./firehouse
   privileged: true
   volumes:
-    - shared/:/shared:rw
-    - volumes/logs:/logs:rw
-    - volumes/logs:/firehouse/log:rw
-    - /tmp/:/tmp:rw
-    - firehouse/:/firehouse:rw
-    - bundle/:/bundle:rw
+    - ./shared:/shared:rw
+    - ./volumes/logs:/logs:rw
+    - ./volumes/logs:/firehouse/log:rw
+    - /tmp:/tmp:rw
+    - ./firehouse:/firehouse:rw
+    - ./bundle:/bundle:rw
   links:
     - nginx
     - postgres
     - redis
     - socketio
   environment:
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
 
 postgres:
   build: ./postgres
   ports:
     - 5432:5432
   volumes:
-    - volumes/logs:/logs:rw
-    - volumes/postgres-data/:/var/lib/postgresql:rw
+    - ./volumes/logs:/logs:rw
+    - ./volumes/postgres/data:/var/lib/postgresql/data:rw
   environment:
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
 
 redis:
   build: ./redis
+  privileged: true
   ports:
     - 6379:6379
   volumes:
-    - volumes/logs/:/logs:rw
-    - volumes/redis-data/:/data:rw
+    - ./volumes/logs:/logs:rw
+    - ./volumes/redis:/var/lib/redis:rw
   environment:
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
 
 nginx:
   build: ./nginx
@@ -50,20 +51,20 @@ firealerter:
   build: ./firealerter
   volumes:
     - volumes/logs:/logs:rw
-    - bundle/bundle:/logs:rw
+    - bundle/:/bundle:rw
   links:
     - redis
   ports:
     - 9800:9800
   environment:
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
 
 broadcast:
   build: ./broadcast
   environment:
     firehouse_path: /firehouse
     logs_path: /logs
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
   privileged: true
   net: host
   volumes_from:
@@ -78,7 +79,7 @@ socketio:
   ports:
     - 8085:8085
   environment:
-    SERVER_HOST: 192.168.1.200
+    SERVER_HOST: 10.0.10.200
 
 logio:
   build: ./logio

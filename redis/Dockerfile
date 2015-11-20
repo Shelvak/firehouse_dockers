@@ -29,11 +29,11 @@ RUN buildDeps='libc6-dev'; \
 
 RUN apt-get -y clean autoclean autoremove
 
-RUN mkdir -p /data
-VOLUME /data
-WORKDIR /data
+VOLUME /var/lib/redis
 
 ADD redis.conf /etc/redis.conf
+ADD start.sh /start.sh
+RUN chmod 777 /start.sh
 
-EXPOSE 6379
-CMD redis-server
+EXPOSE 6379:6379
+CMD /start.sh
