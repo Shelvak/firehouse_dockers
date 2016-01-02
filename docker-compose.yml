@@ -65,6 +65,7 @@ broadcast:
     firehouse_path: /firehouse
     logs_path: /logs
     SERVER_HOST: 10.0.10.200
+    BROADCAST_IP: 10.0.10.255
   privileged: true
   net: host
   volumes_from:
