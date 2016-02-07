@@ -89,13 +89,6 @@ logio:
   ports:
     - 8086:28778
 
-cacher:
-  build: ./apt_cacher
-  volumes:
-    - volumes/cache:/var/cache/apt-cacher-ng:rw
-  ports:
-    - 3142:3142
-
 gps:
   build: ./gps_tracker
   ports:
@@ -108,10 +101,10 @@ gps:
     project_public_dir: /gps_tracker
 
 squid:
-	image: fgrehm/squid3-ssl:v20140809
+  image: fgrehm/squid3-ssl:v20140809
   volumes:
     - volumes/squid/cache:/var/spool/squid3:rw
     - volumes/logs/squid:/var/log/squid3:rw
-    - proxy.docker.dev.crt:/usr/share/ca-certificates/proxy.docker.dev.crt
+    - baseimage/proxy.docker.dev.crt:/usr/share/ca-certificates/proxy.docker.dev.crt:rw
   ports:
     - 3128:3128
