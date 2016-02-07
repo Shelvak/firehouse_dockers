@@ -108,9 +108,10 @@ gps:
     project_public_dir: /gps_tracker
 
 squid:
-  build: ./squid
+	image: fgrehm/squid3-ssl:v20140809
   volumes:
     - volumes/squid/cache:/var/spool/squid3:rw
     - volumes/logs/squid:/var/log/squid3:rw
+    - proxy.docker.dev.crt:/usr/share/ca-certificates/proxy.docker.dev.crt
   ports:
     - 3128:3128

@@ -18,3 +18,7 @@ RUN apt-get install -y build-essential software-properties-common \
 
 RUN apt-get -y clean autoclean autoremove
 
+# Add squid ssl cert
+ADD proxy.docker.dev.crt /usr/share/ca-certificates/proxy.docker.dev.crt
+RUN echo 'proxy.docker.dev.crt' >> /etc/ca-certificates.conf
+RUN /usr/sbin/update-ca-certificates

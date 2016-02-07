@@ -2,12 +2,11 @@
 list
 
 == Install / Start
+- docker build --no-cache -t shelvak/baseimage baseimage/
 - docker build -t shelvak/ruby:2.1 ruby/
-- docker build -t shelvak/baseimage baseimage/
 - apt-get install python-pip
 - pip install docker-compose
-- docker-compose build cacher
-- docker-compose up -d cacher
+- docker-compose up -d squid
 - docker-compose build
 - docker-compose up -d
 
