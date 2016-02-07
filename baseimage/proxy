@@ -1,2 +1,2 @@
-Acquire::http { Proxy "http://172.17.42.1:3142"; };
-Acquire::https false;
+Acquire::http { Proxy "http://172.17.42.1:3128"; };
+Acquire::https { Proxy "http://172.17.42.1:3128"; };

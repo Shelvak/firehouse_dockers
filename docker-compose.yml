@@ -95,3 +95,22 @@ cacher:
     - volumes/cache:/var/cache/apt-cacher-ng:rw
   ports:
     - 3142:3142
+
+gps:
+  build: ./gps_tracker
+  ports:
+    - 34567:34567
+  links:
+    - postgres
+  volumes:
+    - ./volumes/logs/gps:/gps_tracker/log:rw
+  environment:
+    project_public_dir: /gps_tracker
+
+squid:
+  build: ./squid
+  volumes:
+    - volumes/squid/cache:/var/spool/squid3:rw
+    - volumes/logs/squid:/var/log/squid3:rw
+  ports:
+    - 3128:3128
