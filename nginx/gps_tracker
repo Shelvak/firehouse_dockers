@@ -1,0 +1,34 @@
+upstream gps_tracker {
+    server unix:/tmp/unicorn.gps_tracker.socket fail_timeout=0;
+}
+
+server {
+  listen       85;
+  server_name  localhost;
+  root /gps_tracker/public;
+  client_max_body_size 128M;
+
+  try_files $uri @app;
+
+  location @app {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Server $host;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header Host $host;
+    proxy_redirect off;
+
+
+    proxy_pass http://gps_tracker;
+  }
+
+  location /assets/ {
+    expires max;
+    add_header Cache-Control public;
+  }
+
+  location ~ \.php$ {
+    deny  all;
+  }
+}

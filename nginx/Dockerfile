@@ -11,6 +11,7 @@ RUN apt-get -y clean autoclean autoremove
 RUN rm /etc/nginx/sites-enabled/default
 
 ADD firehouse /etc/nginx/sites-enabled/firehouse
+ADD gps_tracker /etc/nginx/sites-enabled/gps_tracker
 ADD nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80:80

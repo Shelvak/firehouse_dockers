@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+if [[ -z $(ps -ef |grep -i cron) ]]
+then 
+  cron&
+else
+  echo "all's good...\n"
+fi
+
 if [ "$1" = 'postgres' ]; then
 	chown -R postgres "$PGDATA"
 	

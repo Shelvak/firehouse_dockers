@@ -14,6 +14,7 @@ RUN apt-get -y clean autoclean autoremove
 
 # skip installing gem documentation
 RUN echo 'gem: --no-rdoc --no-ri' >> "$HOME/.gemrc"
+RUN echo 'http_proxy: http://172.17.42.1:3128' >> "$HOME/.gemrc"
 
 # install things globally, for great justice
 RUN mkdir -p /bundle

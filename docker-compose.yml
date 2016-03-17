@@ -4,7 +4,7 @@ firehouse:
   volumes:
     - ./shared:/shared:rw
     - ./volumes/logs:/logs:rw
-    - ./volumes/logs:/firehouse/log:rw
+    - ./volumes/logs/firehouse:/firehouse/log:rw
     - /tmp:/tmp:rw
     - ./firehouse:/firehouse:rw
     - ./bundle:/bundle:rw
@@ -21,6 +21,7 @@ postgres:
   ports:
     - 5432:5432
   volumes:
+    - shared/:/shared:rw
     - ./volumes/logs:/logs:rw
     - ./volumes/postgres/data:/var/lib/postgresql/data:rw
   environment:
@@ -42,10 +43,12 @@ nginx:
   volumes:
     - shared/:/shared:rw
     - firehouse/:/firehouse:ro
+    - gps_tracker/:/gps_tracker:ro
     - volumes/logs:/logs:rw
     - /tmp/:/tmp:rw
   ports:
     - 80:80
+    - 85:85
 
 firealerter:
   build: ./firealerter
@@ -91,20 +94,27 @@ logio:
 
 gps:
   build: ./gps_tracker
-  ports:
-    - 34567:34567
-  links:
-    - postgres
   volumes:
+    - ./shared:/shared:rw
     - ./volumes/logs/gps:/gps_tracker/log:rw
+    - ./volumes/logs:/logs:rw
+    - ./volumes/logs:/firehouse/log:rw
+    - /tmp:/tmp:rw
+    - ./gps_tracker:/gps_tracker:rw
+    - ./bundle:/bundle:rw
+  links:
+    - nginx
+    - postgres
+  ports:
+    - 3003:3003
   environment:
     project_public_dir: /gps_tracker
 
 squid:
-  image: fgrehm/squid3-ssl:v20140809
+  build: squid/
   volumes:
-    - volumes/squid/cache:/var/spool/squid3:rw
+    - shared/:/shared:rw
+    - volumes/squid/cache:/var/cache/squid3:rw
     - volumes/logs/squid:/var/log/squid3:rw
-    - baseimage/proxy.docker.dev.crt:/usr/share/ca-certificates/proxy.docker.dev.crt:rw
   ports:
     - 3128:3128

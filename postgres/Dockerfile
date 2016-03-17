@@ -44,6 +44,14 @@ VOLUME /var/lib/postgresql/
 ADD docker-entrypoint.sh /
 RUN chmod 777 /docker-entrypoint.sh
 
+RUN apt-get update
+RUN apt-get install -yqq cron
+
+ADD pgdump /etc/cron.daily/pgdump
+RUN chmod 777 /etc/cron.daily/pgdump
+
+RUN cron
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 5432
