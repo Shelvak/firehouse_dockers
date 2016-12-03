@@ -3,8 +3,8 @@ upstream firehouse {
 }
 
 server {
-  listen       80 default;
-  server_name  default_server localhost;
+  listen 80 default;
+  server_name default_server localhost;
   root /firehouse/public;
   client_max_body_size 128M;
 

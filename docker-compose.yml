@@ -7,7 +7,7 @@ firehouse:
     - ./volumes/logs/firehouse:/firehouse/log:rw
     - /tmp:/tmp:rw
     - ./firehouse:/firehouse:rw
-    - ./bundle:/bundle:rw
+    - ./volumes/bundle:/bundle:rw
   links:
     - nginx
     - postgres
@@ -25,6 +25,7 @@ postgres:
     - ./volumes/logs:/logs:rw
     - ./volumes/postgres/data:/var/lib/postgresql/data:rw
   environment:
+    DOCKER_HOST_IP: 172.17.0.1
     SERVER_HOST: 10.0.10.200
 
 redis:
@@ -41,10 +42,10 @@ redis:
 nginx:
   build: ./nginx
   volumes:
-    - shared/:/shared:rw
-    - firehouse/:/firehouse:ro
-    - gps_tracker/:/gps_tracker:ro
-    - volumes/logs:/logs:rw
+    - ./shared/:/shared:rw
+    - ./firehouse/:/firehouse:ro
+    - ./gps_tracker/:/gps_tracker:ro
+    - ./volumes/logs:/logs:rw
     - /tmp/:/tmp:rw
   ports:
     - 80:80
@@ -53,8 +54,8 @@ nginx:
 firealerter:
   build: ./firealerter
   volumes:
-    - volumes/logs:/logs:rw
-    - bundle/:/bundle:rw
+    - ./volumes/logs:/logs:rw
+    - ./volumes/bundle:/bundle:rw
   links:
     - redis
   ports:
@@ -77,7 +78,7 @@ broadcast:
 socketio:
   build: ./socketio
   volumes:
-    - volumes/logs:/logs:rw
+    - ./volumes/logs:/logs:rw
   links:
     - redis
   ports:
@@ -85,36 +86,36 @@ socketio:
   environment:
     SERVER_HOST: 10.0.10.200
 
-logio:
-  build: ./logio
-  volumes:
-    - volumes/logs:/logs:rw
-  ports:
-    - 8086:28778
+#logio:
+#  build: ./logio
+#  volumes:
+#    - ./volumes/logs:/logs:rw
+#  ports:
+#    - 8086:28778
 
-gps:
-  build: ./gps_tracker
-  volumes:
-    - ./shared:/shared:rw
-    - ./volumes/logs/gps:/gps_tracker/log:rw
-    - ./volumes/logs:/logs:rw
-    - ./volumes/logs:/firehouse/log:rw
-    - /tmp:/tmp:rw
-    - ./gps_tracker:/gps_tracker:rw
-    - ./bundle:/bundle:rw
-  links:
-    - nginx
-    - postgres
-  ports:
-    - 3003:3003
-  environment:
-    project_public_dir: /gps_tracker
+#gps:
+#  build: ./gps_tracker
+#  volumes:
+#    - ./shared:/shared:rw
+#    - ./volumes/logs/gps:/gps_tracker/log:rw
+#    - ./volumes/logs:/logs:rw
+#    - ./volumes/logs:/firehouse/log:rw
+#    - /tmp:/tmp:rw
+#    - ./gps_tracker:/gps_tracker:rw
+#    - ./bundle:/bundle:rw
+#  links:
+#    - nginx
+#    - postgres
+#  ports:
+#    - 3003:3003
+#  environment:
+#    project_public_dir: /gps_tracker
 
 squid:
   build: squid/
   volumes:
-    - shared/:/shared:rw
-    - volumes/squid/cache:/var/cache/squid3:rw
-    - volumes/logs/squid:/var/log/squid3:rw
+    - ./shared/:/shared:rw
+    - ./volumes/squid/cache:/var/cache/squid3:rw
+    - ./volumes/logs/squid:/var/log/squid3:rw
   ports:
     - 3128:3128

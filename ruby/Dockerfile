@@ -1,12 +1,12 @@
 FROM shelvak/baseimage
-
 MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV RUBY_VERSION 2.1
 
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
-RUN apt-get install -y ruby2.1 ruby2.1-dev zlib1g-dev \
+RUN apt-get install -y --force-yes ruby$RUBY_VERSION ruby$RUBY_VERSION-dev zlib1g-dev \
   libssl-dev libreadline-dev libyaml-dev libxml2-dev libxslt1-dev \
   libcurl4-openssl-dev libffi-dev nodejs
 
@@ -14,9 +14,9 @@ RUN apt-get -y clean autoclean autoremove
 
 # skip installing gem documentation
 RUN echo 'gem: --no-rdoc --no-ri' >> "$HOME/.gemrc"
-RUN echo 'http_proxy: http://172.17.42.1:3128' >> "$HOME/.gemrc"
-
+RUN echo 'http_proxy: http://172.17.0.1:3128' >> "$HOME/.gemrc"
 # install things globally, for great justice
+
 RUN mkdir -p /bundle
 ENV GEM_HOME /bundle
 ENV GEM_PATH $GEM_HOME
@@ -31,4 +31,4 @@ RUN gem update --system \
 # don't create ".bundle" in all our apps
 ENV BUNDLE_APP_CONFIG $GEM_HOME
 
-CMD ['bash']
+CMD ['echo','Ruby Done!']

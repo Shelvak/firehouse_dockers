@@ -4,7 +4,8 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN add-apt-repository -y ppa:chris-lea/node.js
+RUN add-apt-repository -y -r ppa:chris-lea/node.js
+RUN rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list
 RUN apt-get update
 
 RUN apt-get -y install nodejs
