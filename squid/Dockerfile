@@ -1,4 +1,4 @@
-FROM firehouse/baseimage:201611
+FROM shelvak/baseimage
 MAINTAINER Fabio Rehm <fgrehm@gmail.com>
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main" > /etc/apt/sources.list && \
