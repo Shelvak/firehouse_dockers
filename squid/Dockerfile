@@ -1,4 +1,4 @@
-FROM phusion/baseimage
+FROM shelvak/baseimage
 MAINTAINER Fabio Rehm <fgrehm@gmail.com>
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main" > /etc/apt/sources.list && \

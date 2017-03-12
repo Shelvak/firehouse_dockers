@@ -1,4 +1,4 @@
-FROM firehouse/baseimage:201611
+FROM shelvak/baseimage
 
 MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 

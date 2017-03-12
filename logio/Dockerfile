@@ -4,12 +4,9 @@ MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN add-apt-repository -y -r ppa:chris-lea/node.js
-RUN rm -f /etc/apt/sources.list.d/chris-lea-node_js-*.list
 RUN apt-get update
 
-RUN apt-get -y install nodejs
-RUN apt-get -y install python python-pip python-dev
+RUN apt-get -y install nodejs nodejs-legacy npm python python-pip python-dev
 RUN adduser --shell /bin/false --gecos "" --disabled-password logio
 RUN export USER=logio; export HOME=/home/logio; npm install -g log.io --user "logio"
 RUN apt-get -y clean autoclean autoremove
