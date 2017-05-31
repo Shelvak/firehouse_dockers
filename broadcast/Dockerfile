@@ -11,7 +11,7 @@ RUN apt-get -y clean autoclean autoremove
 RUN useradd --create-home vlc
 
 RUN apt-get install -y -qq pulseaudio
-RUN git clone -v https://github.com/FRM-UTN/firehouse_audio
+RUN git clone -v --depth 1 https://github.com/Shelvak/firehouse_audio
 
 RUN gem install bundler rake
 RUN cd firehouse_audio && bundle install

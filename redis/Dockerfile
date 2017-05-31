@@ -1,4 +1,4 @@
-FROM firehouse/baseimage:201611
+FROM shelvak/baseimage
 
 # grab gosu for easy step-down from root
 RUN gpg --keyserver pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
