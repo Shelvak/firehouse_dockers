@@ -8,6 +8,7 @@ RUN apt-get update
 RUN apt-get install -y nginx
 RUN apt-get -y clean autoclean autoremove
 
+RUN rm -Rf /etc/nginx/sites-available
 RUN rm /etc/nginx/sites-enabled/default
 
 ADD firehouse /etc/nginx/sites-enabled/firehouse

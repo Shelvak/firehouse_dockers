@@ -1,5 +1,7 @@
-FROM shelvak/baseimage
+FROM shelvak/ruby:2.1
 MAINTAINER Fabio Rehm <fgrehm@gmail.com>
+
+RUN rm /etc/apt/apt.conf.d/01proxy
 
 RUN echo "deb http://archive.ubuntu.com/ubuntu trusty main" > /etc/apt/sources.list && \
     echo "deb http://archive.ubuntu.com/ubuntu/ trusty-updates main" >> /etc/apt/sources.list && \
@@ -38,8 +40,11 @@ RUN chown -R proxy:proxy /var/lib/ssl_db
 # Prepare configs and executable
 ADD squid.conf /etc/squid3/squid.conf
 ADD openssl.cnf /etc/squid3/openssl.cnf
+ADD rewrite.rb /etc/squid3/rewrite.rb
 ADD run /usr/local/bin/run
+
 RUN chmod +x /usr/local/bin/run
+RUN chmod 777 /etc/squid3/rewrite.rb
 
 # Add own cert files
 ADD cert.crt /etc/squid3/certs/FIREHOUSE.crt

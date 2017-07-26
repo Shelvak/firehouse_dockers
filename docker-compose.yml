@@ -14,7 +14,7 @@ firehouse:
     - redis
     - socketio
   environment:
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
 
 postgres:
   build: ./postgres
@@ -26,7 +26,7 @@ postgres:
     - ./volumes/postgres/data:/var/lib/postgresql/data:rw
   environment:
     DOCKER_HOST_IP: 172.17.0.1
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
 
 redis:
   build: ./redis
@@ -37,7 +37,7 @@ redis:
     - ./volumes/logs:/logs:rw
     - ./volumes/redis:/var/lib/redis:rw
   environment:
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
 
 nginx:
   build: ./nginx
@@ -46,10 +46,9 @@ nginx:
     - ./firehouse/:/firehouse:ro
     - ./gps_tracker/:/gps_tracker:ro
     - ./volumes/logs:/logs:rw
-    - /tmp/:/tmp:rw
+    - /tmp:/tmp:rw
   ports:
     - 80:80
-    - 85:85
 
 firealerter:
   build: ./firealerter
@@ -61,17 +60,20 @@ firealerter:
   ports:
     - 9800:9800
   environment:
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
 
 broadcast:
   build: ./broadcast
   environment:
     firehouse_path: /firehouse
     logs_path: /logs
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
     BROADCAST_IP: 10.0.10.255
+  #links:
+  #  - redis
   privileged: true
   net: host
+  user: vlc
   volumes_from:
     - firehouse
 
@@ -84,7 +86,7 @@ socketio:
   ports:
     - 8085:8085
   environment:
-    SERVER_HOST: 10.0.10.200
+    SERVER_HOST: server.bvgc.org
 
 logio:
   build: ./logio

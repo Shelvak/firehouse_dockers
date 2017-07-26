@@ -3,8 +3,8 @@ upstream firehouse {
 }
 
 server {
-  listen 80 default;
-  server_name default_server localhost;
+  listen 80 default_server;
+  server_name _;
   root /firehouse/public;
   client_max_body_size 128M;
 
@@ -16,7 +16,7 @@ server {
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Forwarded-Server $host;
     proxy_set_header X-Forwarded-Host $host;
-    proxy_set_header Host $host;
+    proxy_set_header Host $host:$server_port;
     proxy_redirect off;
 
     proxy_pass http://firehouse;
