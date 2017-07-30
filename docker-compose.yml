@@ -1,6 +1,6 @@
 firehouse:
   build: ./firehouse
-  privileged: true
+  # privileged: true
   volumes:
     - ./shared:/shared:rw
     - ./volumes/logs:/logs:rw
@@ -30,7 +30,7 @@ postgres:
 
 redis:
   build: ./redis
-  privileged: true
+  # privileged: true
   ports:
     - 6379:6379
   volumes:
@@ -119,3 +119,37 @@ squid:
     - ./volumes/logs/squid:/var/log/squid3:rw
   ports:
     - 3128:3128
+
+osmtiles_on_demand:
+  image: klokantech/tileserver-gl:v2.1.0
+  volumes:
+    - ./volumes/osm-tiles:/data:rw
+  ports:
+    - 8881:80
+
+
+osmtiles_postgres:
+	image: smartroadsense/osm-tiles
+	user: root
+	environment:
+		OSM_DB_USER: osm
+		OSM_DB_PASS: osm
+		OSM_DB_HOST: postgres
+		OSM_DB_PORT: 5432
+		OSM_DB_NAME: osm
+	links:
+		- postgres
+	volumes:
+    - ./volumes/osm-tiles-postgres/data:/data:rw
+    - ./volumes/osm-tiles-postgres/db:/var/lib/postgresql
+    - ./volumes/osm-tiles-postgres/mod_tile:/var/lib/mod_tile
+  ports:
+    - 8882:80
+
+osrm:
+  image: osrm/osrm-backend:v5.9.2
+  volumes:
+    - ./volumes/osrm-backed:/data:rw
+  ports:
+    - 5000:5000
+
