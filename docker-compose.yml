@@ -129,17 +129,17 @@ osmtiles_on_demand:
 
 
 osmtiles_postgres:
-	image: smartroadsense/osm-tiles
-	user: root
-	environment:
-		OSM_DB_USER: osm
-		OSM_DB_PASS: osm
-		OSM_DB_HOST: postgres
-		OSM_DB_PORT: 5432
-		OSM_DB_NAME: osm
-	links:
-		- postgres
-	volumes:
+  image: smartroadsense/osm-tiles
+  user: root
+  environment:
+    OSM_DB_USER: osm
+    OSM_DB_PASS: osm
+    OSM_DB_HOST: postgres
+    OSM_DB_PORT: 5432
+    OSM_DB_NAME: osm
+  links:
+    - postgres
+  volumes:
     - ./volumes/osm-tiles-postgres/data:/data:rw
     - ./volumes/osm-tiles-postgres/db:/var/lib/postgresql
     - ./volumes/osm-tiles-postgres/mod_tile:/var/lib/mod_tile
