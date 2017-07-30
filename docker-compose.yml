@@ -24,6 +24,8 @@ postgres:
     - shared/:/shared:rw
     - ./volumes/logs:/logs:rw
     - ./volumes/postgres/data:/var/lib/postgresql/data:rw
+    - ./postgres/postgresql.conf:/etc/postgres/9.3/main/postgresql.conf
+    - ./postgres/pg_hba.conf:/etc/postgres/9.3/main/pg_hba.conf
   environment:
     DOCKER_HOST_IP: 172.17.0.1
     SERVER_HOST: server.bvgc.org
@@ -130,7 +132,7 @@ osmtiles_on_demand:
 
 osmtiles_postgres:
   image: smartroadsense/osm-tiles
-  user: root
+  # user: root
   environment:
     OSM_DB_USER: osm
     OSM_DB_PASS: osm
@@ -141,10 +143,12 @@ osmtiles_postgres:
     - postgres
   volumes:
     - ./volumes/osm-tiles-postgres/data:/data:rw
-    - ./volumes/osm-tiles-postgres/db:/var/lib/postgresql
-    - ./volumes/osm-tiles-postgres/mod_tile:/var/lib/mod_tile
+    - ./volumes/osm-tiles-postgres/db:/var/lib/postgresql:rw
+    - ./volumes/osm-tiles-postgres/mod_tile:/var/lib/mod_tile:rw
+    - ./osm-configs/OSMBright.xml:/opt/osm-bright-master/OSMBright/OSMBright.xml
+    - ./osm-configs/osm_tiles-docker-entrypoint.sh:/docker-entrypoint.sh:rw
   ports:
-    - 8882:80
+    - 8882:8000
 
 osrm:
   image: osrm/osrm-backend:v5.9.2

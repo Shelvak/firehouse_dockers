@@ -18,7 +18,9 @@ RUN apt-get update && rm -rf /var/lib/apt/lists/* \
   && apt-get install -y locales cron \
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
   && rm -rf /var/lib/apt/lists/* \
-  && apt-get -y autoremove clean autoclean
+  && apt-get -y autoremove \
+  && apt-get -y clean \
+  && apt-get -y autoclean
 
 ENV LANG en_US.utf8
 ENV PG_MAJOR 9.3
@@ -34,8 +36,10 @@ RUN apt-get update \
 		postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
     postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts \
     postgis \
-	&& rm -rf /var/lib/apt/lists/* \
-  && apt-get -y clean autoclean autoremove
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get -y autoremove \
+  && apt-get -y clean \
+  && apt-get -y autoclean
 
 RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 
