@@ -1,3 +1,5 @@
+config/redis/
+config/firehouse/
 shared/
 volumes/
 bundle/

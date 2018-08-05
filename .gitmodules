@@ -1,6 +1,0 @@
-[submodule "firehouse"]
-	path = firehouse
-	url = git@github.com:FRM-UTN/firehouse.git
-[submodule "gps_tracker"]
-	path = gps_tracker
-	url = git@github.com:Shelvak/gps_tracker.git
