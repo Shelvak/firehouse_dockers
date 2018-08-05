@@ -1,0 +1,26 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['DB_DEV_NAME'] %>
+  pool: 5
+  username: <%= ENV['DB_DEV_USR'] %>
+  password: <%= ENV['DB_DEV_PWD'] %>
+  host: <%= ENV['DB_DEV_HOST'] %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['DB_TEST_NAME'] %>
+  pool: 5
+  username: <%= ENV['DB_TEST_USR'] %>
+  password: <%= ENV['DB_TEST_PWD'] %>
+  host: <%= ENV['DB_TEST_HOST'] %>
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['DB_PROD_NAME'] %>
+  pool: 5
+  username: <%= ENV['DB_PROD_USR'] %>
+  password: <%= ENV['DB_PROD_PWD'] %>
+  host: <%= ENV['DB_PROD_HOST'] %>

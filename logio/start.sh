@@ -4,6 +4,6 @@ echo "Starting server"
 log.io-server&
 sleep 1
 
-echo "starting harvester"
+echo "Starting harvester"
 
 log.io-harvester

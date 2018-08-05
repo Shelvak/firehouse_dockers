@@ -1,159 +1,107 @@
-firehouse:
-  build: ./firehouse
-  # privileged: true
-  volumes:
-    - ./shared:/shared:rw
-    - ./volumes/logs:/logs:rw
-    - ./volumes/logs/firehouse:/firehouse/log:rw
-    - /tmp:/tmp:rw
-    - ./firehouse:/firehouse:rw
-    - ./volumes/bundle:/bundle:rw
-  links:
-    - nginx
-    - postgres
-    - redis
-    - socketio
-  environment:
-    SERVER_HOST: server.bvgc.org
+version: '2.2'
 
-postgres:
-  build: ./postgres
-  ports:
-    - 5432:5432
-  volumes:
-    - shared/:/shared:rw
-    - ./volumes/logs:/logs:rw
-    - ./volumes/postgres/data:/var/lib/postgresql/data:rw
-    - ./postgres/postgresql.conf:/etc/postgres/9.3/main/postgresql.conf
-    - ./postgres/pg_hba.conf:/etc/postgres/9.3/main/pg_hba.conf
-  environment:
-    DOCKER_HOST_IP: 172.17.0.1
-    SERVER_HOST: server.bvgc.org
+services:
+  firehouse:
+    build: ./docker-firehouse
+    container_name: firehouse
+    image: firehouse/firehouse:0.3
+    volumes:
+      - ./volumes/firehouse:/firehouse:rw
+      - ./volumes/firehouse_private:/firehouse_private:rw
+      - ./volumes/firehouse_public:/firehouse_public:rw
+      - ./volumes/firehouse_uploads:/firehouse_uploads:rw
+      - ./volumes/logs/firehouse:/logs:rw
+    environment:
+      RAILS_ENV: production 
+      SERVER_HOST: firehouse.bvgc.org
+      REDIS_HOST: server.bvgc.org
+      SOCKETIO_HOST: firehouse.bvgc.org
+      SOCKETIO_PORT: '80'
+      DB_TEST_HOST: db1.bvgc.org
+      DB_TEST_NAME: firehouse_testing
+      DB_TEST_USR: firehouse
+      DB_TEST_PWD: 'F1r3h0us3!'
+      DB_PROD_HOST: db1.bvgc.org
+      DB_PROD_NAME: firehouse_production
+      DB_PROD_USR: firehouse
+      DB_PROD_PWD: 'F1r3h0us3!'
+      CALL_CENTER_ENDPOINT: 'http://net.bvgc.org/llamadas'
+    ports:
+      - "8080:8080"
+    restart: always
 
-redis:
-  build: ./redis
-  # privileged: true
-  ports:
-    - 6379:6379
-  volumes:
-    - ./volumes/logs:/logs:rw
-    - ./volumes/redis:/var/lib/redis:rw
-  environment:
-    SERVER_HOST: server.bvgc.org
+  # Implementado
+  redis:
+    image: redis:3
+    command: redis-server /data/redis.conf
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./volumes/logs/redis:/data:rw
+      - ./redis/redis.conf:/data/redis.conf
+    restart: always
 
-nginx:
-  build: ./nginx
-  volumes:
-    - ./shared/:/shared:rw
-    - ./firehouse/:/firehouse:ro
-    - ./gps_tracker/:/gps_tracker:ro
-    - ./volumes/logs:/logs:rw
-    - /tmp:/tmp:rw
-  ports:
-    - 80:80
+  # Implementado
+  firealerter:
+    build: ./docker-firealerter
+    container_name: firealerter
+    image: firehouse/firealerter:ruby2.2.10
+    environment:
+      REDIS_HOST: server.bvgc.org
+      SERVER_HOST: firehouse.bvgc.org
+      logs_path: /logs
+    ports:
+      - "9800:9800"
+    volumes:
+      - ./volumes/logs/firealerter:/logs:rw
+    restart: always
 
-firealerter:
-  build: ./firealerter
-  volumes:
-    - ./volumes/logs:/logs:rw
-    - ./volumes/bundle:/bundle:rw
-  links:
-    - redis
-  ports:
-    - 9800:9800
-  environment:
-    SERVER_HOST: server.bvgc.org
+  # Implementado
+  broadcast:
+    build: ./docker-broadcast
+    container_name: broadcast
+    image: firehouse/broadcast:ruby-2.2.10
+    environment:
+      REDIS_HOST: server.bvgc.org
+      BROADCAST_IP: 10.0.10.255
+      GEM_HOME: "/home/vlc/.gem"
+      PATH: "$GEM_HOME/ruby/2.2.0/bin:$PATH"
+      firehouse_path: /firehouse
+      logs_path: /logs
+    privileged: true
+    pid: "host"
+    network_mode: "host"
+    volumes:
+      - ./volumes/logs/broadcast:/logs:rw
+      - ./volumes/firehouse_audio:/firehouse_audio:rw
+      - ./volumes/firehouse_uploads:/firehouse/uploads:rw
+    restart: always
 
-broadcast:
-  build: ./broadcast
-  environment:
-    firehouse_path: /firehouse
-    logs_path: /logs
-    SERVER_HOST: server.bvgc.org
-    BROADCAST_IP: 10.0.10.255
-  #links:
-  #  - redis
-  privileged: true
-  net: host
-  user: vlc
-  volumes_from:
-    - firehouse
+  # Implementado
+  socketio:
+    build: ./docker-socketio
+    container_name: socketio
+    image: firehouse/socketio
+    environment:
+      REDIS_HOST: server.bvgc.org
+    volumes:
+      - ./volumes/logs:/logs:rw
+    ports:
+      - "8085:8085"
+    restart: always
 
-socketio:
-  build: ./socketio
-  volumes:
-    - ./volumes/logs:/logs:rw
-  links:
-    - redis
-  ports:
-    - 8085:8085
-  environment:
-    SERVER_HOST: server.bvgc.org
-
-logio:
-  build: ./logio
-  volumes:
-    - ./volumes/logs:/logs:ro
-  ports:
-    - 8086:28778
-
-gpsmilonga:
-  build: ./gps_tracker
-  volumes:
-    - ./shared:/shared:rw
-    - ./volumes/logs/gps:/gps_tracker/log:rw
-    - ./volumes/logs:/logs:rw
-    - ./gps_tracker:/gps_tracker:rw
-    #- ./volumes/bundle:/bundle:rw
-  links:
-    - nginx
-    - postgres
-  ports:
-    - 3003:34567
-  environment:
-    project_public_dir: /gps_tracker
-
-squid:
-  build: squid/
-  volumes:
-    - ./shared/:/shared:rw
-    - ./volumes/squid/cache:/var/cache/squid3:rw
-    - ./volumes/logs/squid:/var/log/squid3:rw
-  ports:
-    - 3128:3128
-
-osmtiles_on_demand:
-  image: klokantech/tileserver-gl:v2.1.0
-  volumes:
-    - ./volumes/osm-tiles:/data:rw
-  ports:
-    - 8881:80
-
-
-osmtiles_postgres:
-  image: smartroadsense/osm-tiles
-  # user: root
-  environment:
-    OSM_DB_USER: osm
-    OSM_DB_PASS: osm
-    OSM_DB_HOST: postgres
-    OSM_DB_PORT: 5432
-    OSM_DB_NAME: osm
-  links:
-    - postgres
-  volumes:
-    - ./volumes/osm-tiles-postgres/data:/data:rw
-    - ./volumes/osm-tiles-postgres/db:/var/lib/postgresql:rw
-    - ./volumes/osm-tiles-postgres/mod_tile:/var/lib/mod_tile:rw
-    - ./osm-configs/OSMBright.xml:/opt/osm-bright-master/OSMBright/OSMBright.xml
-    - ./osm-configs/osm_tiles-docker-entrypoint.sh:/docker-entrypoint.sh:rw
-  ports:
-    - 8882:8000
-
-osrm:
-  image: osrm/osrm-backend:v5.9.2
-  volumes:
-    - ./volumes/osrm-backed:/data:rw
-  ports:
-    - 5000:5000
-
+  # Implementado
+  logio:
+    build: ./logio
+    container_name: logio
+    image: firehouse/logio
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+      HOME: /home/logio
+      USER: logio
+    volumes:
+      - ./volumes/logs:/logs:ro
+    ports:
+      - 8086:28778
+    restart: always
