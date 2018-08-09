@@ -4,13 +4,17 @@ services:
   firehouse:
     build: ./docker-firehouse
     container_name: firehouse
-    image: firehouse/firehouse:0.3
+    image: firehouse/firehouse
     volumes:
-      - ./volumes/firehouse:/firehouse:rw
-      - ./volumes/firehouse_private:/firehouse_private:rw
-      - ./volumes/firehouse_public:/firehouse_public:rw
-      - ./volumes/firehouse_uploads:/firehouse_uploads:rw
+      - ./volumes/firehouse_private:/firehouse/private:rw
+      - ./volumes/firehouse_uploads:/firehouse/uploads:rw
       - ./volumes/logs/firehouse:/logs:rw
+      - ./docker-firehouse/config/app_config.yml:/firehouse/config/app_config.yml:ro
+      - ./docker-firehouse/config/database.yml:/firehouse/config/database.yml:ro
+      - ./docker-firehouse/config/unicorn.rb:/firehouse/config/unicorn.rb:ro
+      - ./docker-firehouse/config/secrets.yml:/firehouse/config/secrets.yml:ro
+      - ./docker-firehouse/custom/production.rb:/firehouse/config/environments/production.rb:ro
+      - /llamadas:/firehouse/llamadas:ro
     environment:
       RAILS_ENV: production 
       SERVER_HOST: firehouse.bvgc.org

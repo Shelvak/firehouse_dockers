@@ -27,26 +27,14 @@ RUN apt-get update && \
     apt-get -y clean autoclean autoremove && rm -rf /var/cache/apt/*
 
 # Codigo
-# WORKDIR /usr/src
-RUN echo "0.3" && git clone -v --depth 1 https://github.com/shelvak/firehouse /usr/src/firehouse
-WORKDIR /usr/src/firehouse
+RUN git clone -v --depth 1 https://github.com/shelvak/firehouse /firehouse
 
 # Sobreescritura de configs
-ADD config/app_config.yml /usr/src/firehouse/config/app_config.yml
-ADD config/database.yml /usr/src/firehouse/config/database.yml
-ADD config/unicorn.rb /usr/src/firehouse/config/unicorn.rb
-ADD config/secrets.yml /usr/src/firehouse/config/secrets.yml
 ADD start.sh /start.sh
 
-# Sobreescritura de customizaciones
-# ADD custom/interventions_updater.js.erb /usr/src/firehouse/app/assets/javascripts/maps/interventions_updater.js.erb
-ADD custom/production.rb /usr/src/firehouse/config/environments/production.rb
-
 # Resto de configuraciones para Docker
-VOLUME ["/firehouse"]
-VOLUME ["/firehouse_public"]
-VOLUME ["/firehouse_private"]
-VOLUME ["/firehouse_uploads"]
+VOLUME ["/firehouse/private"]
+VOLUME ["/firehouse/uploads"]
 VOLUME ["/logs"]
 EXPOSE 8080
 CMD ["/start.sh"]

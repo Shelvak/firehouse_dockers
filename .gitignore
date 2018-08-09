@@ -3,3 +3,5 @@ config/firehouse/
 shared/
 volumes/
 bundle/
+
+secrets.yml
