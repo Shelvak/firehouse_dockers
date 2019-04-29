@@ -1,15 +1,12 @@
-FROM shelvak/baseimage
+FROM node:6-alpine
 
 MAINTAINER Néstor Coppi <nestorcoppi@gmail.com>
 
-ENV DEBIAN_FRONTEND noninteractive
-
-RUN apt-get update
-
-RUN apt-get -y install nodejs nodejs-legacy npm python python-pip python-dev
 RUN adduser --shell /bin/false --gecos "" --disabled-password logio
+
+RUN apk add --update python2 python2-dev make g++
+
 RUN export USER=logio; export HOME=/home/logio; npm install -g log.io --user "logio"
-RUN apt-get -y clean autoclean autoremove
 
 USER logio
 ENV HOME /home/logio
@@ -22,4 +19,4 @@ ADD harvester.conf /home/logio/.log.io/harvester.conf
 
 ADD start.sh /start.sh
 
-CMD sh /start.sh
+CMD ["/start.sh"]
