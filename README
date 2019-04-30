@@ -1,21 +1,5 @@
 
-list
+All services needed by Firehouse
 
 == Install / Start
-- docker build --no-cache -t shelvak/baseimage baseimage/
-- docker build -t shelvak/ruby:2.1 ruby/
-- apt-get install python-pip
-- pip install docker-compose
-- docker-compose up -d squid
-- docker-compose build
 - docker-compose up -d
-
-== Rails Deploy
-```bash
-cd firehouse
-git pull --rebase
-cd ..
-docker-compose restart firehouse
-docker-compose run --service-ports firehouse ./starting_the_milonga.sh
-
-
