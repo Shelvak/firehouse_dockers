@@ -1,6 +1,0 @@
-#!/bin/bash
-BACKUP_DIR="/shared/backups/"
-timestamp=`date -u '+%Y'.'%m'.'%d'_'%H'.'%M'.'%S'`
-
-mkdir -m 777 -p "$BACKUP_DIR"
-su -l postgres -c "/usr/bin/pg_dumpall | bzip2 > $BACKUP_DIR/backup_$timestamp.sql.bz2" 
