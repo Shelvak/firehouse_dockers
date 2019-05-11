@@ -23,8 +23,8 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./volumes/logs/redis:/data:rw
-      - ./redis/redis.conf:/data/redis.conf
+      - ./volumes/logs/redis/:/logs/:rw
+      - ./redis/:/data/:rw
     restart: always
 
   firealerter:
@@ -48,7 +48,6 @@ services:
     network_mode: "host"
     volumes:
       - ./volumes/logs/broadcast:/logs:rw
-      - ./volumes/firehouse_audio:/firehouse_audio:rw
       - ./volumes/firehouse_uploads:/firehouse/uploads:rw
     restart: always
 
