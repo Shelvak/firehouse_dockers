@@ -1,1 +1,4 @@
 volumes/*
+*.env
+*.rdb
+*.log
